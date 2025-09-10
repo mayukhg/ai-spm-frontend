@@ -30,11 +30,6 @@ export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const { user, loginMutation, registerMutation } = useAuth();
 
-  // Redirect if already authenticated
-  if (user) {
-    return <Redirect to="/" />;
-  }
-
   const loginForm = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -46,6 +41,11 @@ export default function Auth() {
   const registerForm = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
+
+  // Redirect if already authenticated - AFTER all hooks
+  if (user) {
+    return <Redirect to="/" />;
+  }
 
   const onLogin = (data: LoginFormData) => {
     loginMutation.mutate(data);
